@@ -1,10 +1,10 @@
 /*
 *  Name        : lab_2.cpp
-*  Author      : FILL IN
+*  Author      : Michael Farrar
 *  Description : Using Arithmetic to finish the functions MakeChange()
 and
 *  LaunchHumanCannonball()
-*  Sources     :
+*  Sources     : http://www.physicsclassroom.com/class/vectors/Lesson-2/Horizontally-Launched-Projectiles-Problem-Solving
 */
 // Please note the header above. You need to include the name of the file, the
 // author, a description of the program and any sources used
