@@ -1,3 +1,13 @@
+/*
+Michael Farrar
+1/30/2018
+CSCI21
+How many humans can fit into this thing? Calculator
+
+
+
+
+*/
 #include <iostream>
 #include <math.h>
 #include <cstdlib>
@@ -7,19 +17,19 @@
 
 using namespace std;
 
-double humanCalculator(double h, double d, string choice, double w, double l)
+double humanCalculator(double h, double d, string choice, double w, double l)//These are the dimensions of each container
 {
     double volume = 0.0;
     int numHuman = 0;
-    if (choice == "cubic")
+    if (choice == "cubic")//This if statement handles the choice between cubic and cylinder
     {
-        volume = h * l * w;
-        numHuman = volume * 0.0711;
+        volume = h * l * w;//volume of cubic objects
+        numHuman = volume * 0.0711;//How many humans would fit
         
     }
     else if (choice == "cylinder")
     {
-        volume = 3.1415926 * pow((d/2), 2) * h;
+        volume = 3.1415926 * pow((d/2), 2) * h;//volume of cylinders
         numHuman = volume * 0.0711;
     }
     return numHuman;
@@ -36,7 +46,7 @@ int main(){
     cout << "Hello, welcome to the 'How many humans would fit in this thing?' calculator" << endl;
     cout << "Is the container a cylinder or a cubic object?(please answer either 'cylinder' or 'cubic'" << endl;
     cin >> choice;
-            for (int i = 0; i < choice.length(); i++)
+            for (int i = 0; i < choice.length(); i++)//I really enjoy this uncase sensitive code.
         {
                 if (isupper(choice[i]))
             {
