@@ -7,7 +7,7 @@
 #ifndef LAB_H
 #define LAB_H
 
-#include <iostream>
+#include <iostream>//Many of these libraries were unnecessary and ended up not being used.
 #include <string.h>
 #include <cctype>
 #include <ctype.h>
@@ -21,13 +21,13 @@ for (int i = 0; i < item.length(); i++)
 {
         if (isupper(item[i]))
     {
-        item[i] = tolower(item[i]);
+        item[i] = tolower(item[i]);//This code makes all uppercase characters into lower case characters
         
     }
 
     
 }
-if (number > 3 || number < 1)
+if (number > 3 || number < 1)//If else tree that has all options that the user can input
   {
     number = 3;
   }
@@ -75,10 +75,10 @@ if (number > 3 || number < 1)
 };
 int RockScissorPaper(char player_one, char player_two)
 {
-    const char p = 'p';
+    const char p = 'p';//For some reason, switches demanded const char variables
     const char r = 'r';
     const char s = 's';
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 1; i++)//modified loop from earlier that makes all things typed in lower case.
     {
             if (isupper(player_one))
         {
@@ -100,7 +100,7 @@ int RockScissorPaper(char player_one, char player_two)
     
         
     }
-    switch (player_one){
+    switch (player_one){//I used a combination of switch and if statements to get the desired outcome
         case r: 
             if (player_two == s)
             {
