@@ -1,3 +1,11 @@
+/*
+Michael Farrar
+February 1st 2018
+CSCI 21
+BIN Checker
+
+*/
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -210,10 +218,51 @@ int main() {
     long int master = 0;
     long int discover = 0;
     long int visa = 0;
-    while (isCard == false)//This loop generates new cards until at least one of them is a valid card
+    int disableLoop = 0;
+    cout << "Do you want this program to loop?" << endl;
+    cout << "1 for yes, 2 for no" << endl;
+    cin >> disableLoop;
+    makeRandomCreditcard();//Note: Erase this line to put custom inputs into the Credit Card Numbers File
+    CheckBIN(0, 0, 0, 0);
+    while (isCard == false && disableLoop == 1)//This loop generates new cards until at least one of them is a valid card. NOTE: Crashes often due to how I programmed the random number generator, So if it crashes when you test it please rerun the program
     {
     makeRandomCreditcard();//Note: Erase this line to put custom inputs into the Credit Card Numbers File
     CheckBIN(0, 0, 0, 0);
     }
 }
 
+
+/*
+Checking American Express: 836660038142782
+Checking
+Checking Discover: 836660038142782
+Checking
+Checking Master Card: 836660038142782
+Checking
+Checking Visa: 836660038142782
+Checking
+Checking American Express: 1103648054017472
+Checking
+Checking Discover: 1103648054017472
+Checking
+Checking Master Card: 1103648054017472
+Checking
+Checking Visa: 1103648054017472
+Checking
+Checking American Express: 5411157141574723
+Checking
+Checking Discover: 5411157141574723
+Checking
+Checking Master Card: 5411157141574723
+Checking
+Checking Visa: 5411157141574723
+Checking
+Checking American Express: 4341575773077
+Checking
+Checking Discover: 4341575773077
+Checking
+Checking Master Card: 4341575773077
+Checking
+Checking Visa: 4341575773077
+ is a Visa Card
+ */
