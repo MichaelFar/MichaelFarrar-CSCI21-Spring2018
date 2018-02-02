@@ -13,6 +13,10 @@ BIN Checker
 #include <math.h>
 #include <vector>
 #include <sstream>
+#include <iomanip>
+#include <string.h>
+#include <stdio.h>
+
 using namespace std;
 bool isCard = false;
 
@@ -85,22 +89,80 @@ int makeRandomCreditcard() {//Little optional code I made to generate a random c
     }
     
 }
-int CheckBIN(long int american, long int master, long int discover, long int visa)// Checks BIN of each card company and tells you if you have a valid card
+int CheckBIN(long int american, long int master, long int discover, long int visa, int numCards)// Checks BIN of each card company and tells you if you have a valid card
 {
     stringstream americanSS;
     stringstream masterSS;
     stringstream discoverSS;
     stringstream visaSS;
+    stringstream luhnSS_1;
+    stringstream luhnSS_2;
+    stringstream luhnSS_3;
+    stringstream luhnSS_4;
     ifstream fin;
+    ofstream fout;
     fin.open("CreditCardNumbers");
-    long int creditCard[4];
+    fout.open("dump");
+    int asciiValue = 0;
+    char luhnChar_ = 'i';
+    long int creditCard[numCards];
+    int sum = 0;
+    int checksum = 0;
     int a = 0;
-    for (int i = 0; i < 4; i++)//This assigns a credit card number to its proper element
+    long int creditCardLuhn[numCards];
+    int i = 0;
+    for (int i = 0; i < numCards; i++)//This assigns a credit card number to its proper element
     {
         fin >> creditCard[i];
     }
+    fin.close();
+    fin.open("dump");
+    for (i = 0; i < numCards; i++)
+    {
+    creditCardLuhn[i] = creditCard[i];
+    }
+    
+    luhnSS_1 << creditCardLuhn[0];
+    luhnSS_2 << creditCardLuhn[1];
+    luhnSS_3 << creditCardLuhn[2];
+    luhnSS_4 << creditCardLuhn[3];
+    string luhnStr_4 = luhnSS_4.str();
+    string luhnStr_3 = luhnSS_3.str();
+    string luhnStr_2 = luhnSS_2.str();
+    string luhnStr_1 = luhnSS_1.str();
+    int luhnNum_1[luhnStr_1.length()];
+    int luhnDoubleNum_1[luhnStr_1.length()];
+    int luhnNum_2[luhnStr_2.length()];
+    int luhnDoubleNum_2[luhnStr_2.length()];
+    int luhnNum_3[luhnStr_3.length()];
+    int luhnDoubleNum_3[luhnStr_3.length()];
+    int luhnNum_4[luhnStr_4.length()];
+    int luhnDoubleNum_4[luhnStr_4.length()];
+    
+    for (i = 0; i < luhnStr_1.length(); i++)
+    {
+        
+        luhnNum_1[i] = luhnStr_1[i];
+        fout << " ";
+        fout << char(luhnNum_1[i]);
+        fout << " ";
+        fin >> luhnNum_1[i];
+    }
+    for (i = 0; i < luhnStr_1.length(); i++)
+        {
+        int   digit = luhnStr_1[i] - '0';   // Char to number
+        if  (i & 1)  // Digit 1, 3, 5 not 0, 2, 4 - "even digits" starting at 1
+            if  ((digit <<= 1) >= 10) //  Double it, check >= 10
+                digit -= 9;           //  Same as summing the digits
+         sum += digit;
+        }
+    checksum = sum % 10;
+    
+    
+    
+    
     cout << endl;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < numCards; i++)
     {
     if (i == 0)
     {
@@ -113,17 +175,35 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     
     cout << "Checking Card " << a <<" for American Express: " << creditCard[i] << endl;
     long int visaDynamicLength = 0;
-    if (creditCard[i] >=340000000000000 && creditCard[i] <= 349999999999999)// How I checked the BIN numbers
+    if (creditCard[i] >=340000000000000 && creditCard[i] <= 349999999999999&& checksum == 0)// How I checked the BIN numbers
     {
         americanSS << creditCard[i]- 340000000000000;
     }
-    else if (creditCard[i] >= 370000000000000 && creditCard[i] <= 379999999999999)
+    else if (creditCard[i] >= 370000000000000 && creditCard[i] <= 379999999999999&& checksum == 0)
     {
         americanSS << creditCard[i]- 370000000000000;
     }
     string americanStr = americanSS.str();
+    for (int i = 0; i < luhnStr_1.length(); i++)
+    {
+        
+        luhnNum_1[i] = luhnStr_1[i];
+        fout << " ";
+        fout << char(luhnNum_1[i]);
+        fout << " ";
+        fin >> luhnNum_1[i];
+    }
+    for (int i = 0; i < luhnStr_1.length(); i++)
+        {
+        int   digit = luhnStr_1[i] - '0';   
+        if  (i & 1)  
+            if  ((digit <<= 1) >= 10) 
+                digit -= 9;           
+         sum += digit;
+        }
+    checksum = sum % 10;
     
-    if (americanStr.length() == 13)
+    if (americanStr.length() == 13 && checksum == 0)
     {
         cout << " is an American Express Card" << endl;
         isCard = true;
@@ -138,14 +218,32 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         cout << " is NOT American Express Card" << endl;
         }
     }
+    for (int i = 0; i < luhnStr_2.length(); i++)
+    {
+        
+        luhnNum_2[i] = luhnStr_2[i];
+        fout << " ";
+        fout << char(luhnNum_2[i]);
+        fout << " ";
+        fin >> luhnNum_2[i];
+    }
+    for (int i = 0; i < luhnStr_2.length(); i++)
+        {
+        int   digit = luhnStr_2[i] - '0';   
+        if  (i & 1)  
+            if  ((digit <<= 1) >= 10) 
+                digit -= 9;          
+         sum += digit;
+        }
+    checksum = sum % 10;
     cout << "Checking Card " << a << " for Discover: " << creditCard[i] <<  endl;
-    if (creditCard[i] >=601100000000000 && creditCard[i] <= 601199999999999)
+    if (creditCard[i] >=601100000000000 && creditCard[i] <= 601199999999999&& checksum == 0)
     {
         cout << " is a Discover Card" << endl;  
                 isCard = true;
 
     }
-    else if (creditCard[i] >= 622126000000000 && creditCard[i] <= 622925999999999)
+    else if (creditCard[i] >= 622126000000000 && creditCard[i] <= 622925999999999&& checksum == 0)
     {
         
         cout << " is a Discover Card" << endl;
@@ -153,14 +251,14 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
 
     }
     
-    else if (creditCard[i] >= 644000000000000 && creditCard[i] <= 649999999999999)
+    else if (creditCard[i] >= 644000000000000 && creditCard[i] <= 649999999999999&& checksum == 0)
     {
         cout << " is a Discover Card" << endl;
                 isCard = true;
 
         
     }
-    else if (creditCard[i] >= 650000000000000 && creditCard[i] <= 659999999999999)
+    else if (creditCard[i] >= 650000000000000 && creditCard[i] <= 659999999999999&& checksum == 0)
     {
         cout << " is a Discover Card" << endl;
                 isCard = true;
@@ -177,8 +275,26 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         }
             
     }
+    for (int i = 0; i < luhnStr_3.length(); i++)
+    {
+        
+        luhnNum_3[i] = luhnStr_3[i];
+        fout << " ";
+        fout << char(luhnNum_3[i]);
+        fout << " ";
+        fin >> luhnNum_3[i];
+    }
+    for (int i = 0; i < luhnStr_3.length(); i++)
+        {
+        int   digit = luhnStr_3[i] - '0';   
+        if  (i & 1)  
+            if  ((digit <<= 1) >= 10) 
+                digit -= 9;          
+         sum += digit;
+        }
+    checksum = sum % 10;
     cout << "Checking Card " << a << " for Master Card: " << creditCard[i] <<  endl;
-    if (creditCard[i] >=510000000000000 && creditCard[i] <= 559999999999999)
+    if (creditCard[i] >=510000000000000 && creditCard[i] <= 559999999999999&& checksum == 0)
     {
         cout << " is a Master Card" << endl;
                 isCard = true;
@@ -194,10 +310,28 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         cout << " is NOT Master Card" << endl;
         }
     }
+    for (int i = 0; i < luhnStr_4.length(); i++)
+    {
+        
+        luhnNum_4[i] = luhnStr_4[i];
+        fout << " ";
+        fout << char(luhnNum_4[i]);
+        fout << " ";
+        fin >> luhnNum_4[i];
+    }
+    for (int i = 0; i < luhnStr_4.length(); i++)
+        {
+        int   digit = luhnStr_4[i] - '0';   
+        if  (i & 1)  
+            if  ((digit <<= 1) >= 10) 
+                digit -= 9;           
+         sum += digit;
+        }
+    checksum = sum % 10;
     cout << "Checking Card " << a <<" Visa: " << creditCard[i] <<  endl;
     visaSS >> visa;
     string visaStr = visaSS.str();
-    if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999 && visaStr.length() <= 16 && visaStr.length() >= 13)
+    if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999 && visaStr.length() <= 16 && visaStr.length() >= 13 && checksum == 0)
     {
         cout << " is a Visa Card" << endl;
                 isCard = true;
@@ -214,7 +348,7 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         }
     }
     }
-    
+    fout.close();
     
     
 }
@@ -228,6 +362,9 @@ int main() {
     long int visa = 0;
     int disableLoop = 0;
     char choice = 'i';
+    int numCards = 0;
+    cout << "It must take 4 credit card numbers to work properly. Luhn's algorithm will not work with this code otherwise" << endl;
+    numCards = 4;
     cout << "Do you want this program to loop?" << endl;
     cout << "1 for yes, 2 for no" << endl;
     cin >> disableLoop;
@@ -235,13 +372,13 @@ int main() {
     cin >> choice;
     if (choice == 'n')
     {
-        makeRandomCreditcard();//NOTe: Erase this line to put custom inputs into the Credit Card Numbers File
+        makeRandomCreditcard();
     }
-    CheckBIN(0, 0, 0, 0);
+    CheckBIN(0, 0, 0, 0, numCards);
     while (isCard == false && disableLoop == 1)//This loop generates new cards until at least one of them is a valid card. NOTE: Crashes often due to how I programmed the random number generator, So if it crashes when you test it please rerun the program
     {
-    makeRandomCreditcard();//NOTe: Erase this line to put custom inputs into the Credit Card Numbers File
-    CheckBIN(0, 0, 0, 0);
+    makeRandomCreditcard();
+    CheckBIN(0, 0, 0, 0, numCards);
     }
 }
 
