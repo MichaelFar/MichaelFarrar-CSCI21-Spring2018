@@ -94,16 +94,24 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     ifstream fin;
     fin.open("CreditCardNumbers");
     long int creditCard[4];
-    for (int i = 0; i < 4; i++)
+    int a = 0;
+    for (int i = 0; i < 4; i++)//This assigns a credit card number to its proper element
     {
         fin >> creditCard[i];
     }
     cout << endl;
     for (int i = 0; i < 4; i++)
     {
-        
+    if (i == 0)
+    {
+        a = 1;
+    }
+    else
+    {
+        a = i + 1;
+    }
     
-    cout << "Checking American Express: " << creditCard[i] << endl;
+    cout << "Checking Card " << a <<" for American Express: " << creditCard[i] << endl;
     long int visaDynamicLength = 0;
     if (creditCard[i] >=340000000000000 && creditCard[i] <= 349999999999999)// How I checked the BIN numbers
     {
@@ -117,20 +125,20 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     
     if (americanStr.length() == 13)
     {
-        cout << " is a American Express Card" << endl;
+        cout << " is an American Express Card" << endl;
         isCard = true;
     }
     else
     {
-        if (isCard == false){
-            cout << "Checking" << endl;
+        if (isCard == false){//This bool is for stopping the loop in the main
+            cout << "Checking: is NOT American Express Card" << endl;
         }
         else
         {
-        cout << " INVALID CARD" << endl;
+        cout << " is NOT American Express Card" << endl;
         }
     }
-    cout << "Checking Discover: " << creditCard[i] <<  endl;
+    cout << "Checking Card " << a << " for Discover: " << creditCard[i] <<  endl;
     if (creditCard[i] >=601100000000000 && creditCard[i] <= 601199999999999)
     {
         cout << " is a Discover Card" << endl;  
@@ -161,15 +169,15 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     else
     {
         if (isCard == false){
-            cout << "Checking" << endl;
+            cout << "Checking: is NOT Discover Card" << endl;
         }
         else
         {
-        cout << " INVALID CARD" << endl;
+        cout << " is NOT Discover Card" << endl;
         }
             
     }
-    cout << "Checking Master Card: " << creditCard[i] <<  endl;
+    cout << "Checking Card " << a << " for Master Card: " << creditCard[i] <<  endl;
     if (creditCard[i] >=510000000000000 && creditCard[i] <= 559999999999999)
     {
         cout << " is a Master Card" << endl;
@@ -179,17 +187,17 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     else
     {
         if (isCard == false){
-            cout << "Checking" << endl;
+            cout << "Checking: is NOT Master Card" << endl;
         }
         else
         {
-        cout << " INVALID CARD" << endl;
+        cout << " is NOT Master Card" << endl;
         }
     }
-    cout << "Checking Visa: " << creditCard[i] <<  endl;
+    cout << "Checking Card " << a <<" Visa: " << creditCard[i] <<  endl;
     visaSS >> visa;
     string visaStr = visaSS.str();
-    if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999)
+    if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999 && visaStr.length() <= 16 && visaStr.length() >= 13)
     {
         cout << " is a Visa Card" << endl;
                 isCard = true;
@@ -198,11 +206,11 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     else
     {
         if (isCard == false){
-            cout << "Checking" << endl;
+            cout << "Checking: is NOT Visa Card" << endl;
         }
         else
         {
-        cout << " INVALID CARD" << endl;
+        cout << " is NOT Visa Card" << endl;
         }
     }
     }
@@ -219,14 +227,20 @@ int main() {
     long int discover = 0;
     long int visa = 0;
     int disableLoop = 0;
+    char choice = 'i';
     cout << "Do you want this program to loop?" << endl;
     cout << "1 for yes, 2 for no" << endl;
     cin >> disableLoop;
-    makeRandomCreditcard();//Note: Erase this line to put custom inputs into the Credit Card Numbers File
+    cout << "Do you want to use your own input file values? y/n" << endl;
+    cin >> choice;
+    if (choice == 'n')
+    {
+        makeRandomCreditcard();//NOTe: Erase this line to put custom inputs into the Credit Card Numbers File
+    }
     CheckBIN(0, 0, 0, 0);
     while (isCard == false && disableLoop == 1)//This loop generates new cards until at least one of them is a valid card. NOTE: Crashes often due to how I programmed the random number generator, So if it crashes when you test it please rerun the program
     {
-    makeRandomCreditcard();//Note: Erase this line to put custom inputs into the Credit Card Numbers File
+    makeRandomCreditcard();//NOTe: Erase this line to put custom inputs into the Credit Card Numbers File
     CheckBIN(0, 0, 0, 0);
     }
 }
@@ -265,4 +279,52 @@ Checking Master Card: 4341575773077
 Checking
 Checking Visa: 4341575773077
  is a Visa Card
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Do you want this program to loop?
+1 for yes, 2 for no
+1
+
+
+
+
+
+Checking American Express: 873844578716680
+Checking
+Checking Discover: 873844578716680
+Checking
+Checking Master Card: 873844578716680
+Checking
+Checking Visa: 873844578716680
+Checking
+Checking American Express: 5732513566565455
+Checking
+Checking Discover: 5732513566565455
+Checking
+Checking Master Card: 5732513566565455
+Checking
+Checking Visa: 5732513566565455
+Checking
+Checking American Express: 4024751833572115
+Checking
+Checking Discover: 4024751833572115
+Checking
+Checking Master Card: 4024751833572115
+Checking
+Checking Visa: 4024751833572115
+Checking
+Checking American Express: 4468715834061
+Checking
+Checking Discover: 4468715834061
+Checking
+Checking Master Card: 4468715834061
+Checking
+Checking Visa: 4468715834061
+ is a Visa Card
+
  */
