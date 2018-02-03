@@ -1,6 +1,6 @@
 /*
  * Name        : lab_6.cpp
- * Author      : FILL IN
+ * Author      : Michael Farrar
  * Description : Working with Arrays
  */
 
@@ -9,21 +9,21 @@
 // CODE HERE (FUNCTION DEFINITIONS)
 string PrepareForDisplay(int values[], int size, char separator)
 {
-    values[size];
+    values[size];//This bit is unnecessary, but I will leave it in
     stringstream ss;
     if (separator != ',')
     {
-        separator = separator;
+        separator = separator;//I needed to occupy this if statement with something, so I made it do nothing
     }
     else
     {
-        separator = ',';
+        separator = ',';//This is how it defaults to ','
     }
     for (int i = 0; i < size; i++)
     {
-        cout << "Input: ";
+        cout << "Input: ";//here you may enter any value you wish the array to possess
         cin >> values[i];
-        if (i < size - 1)
+        if (i < size - 1)//This makes it so that the separator is not put after the last element value
         {
             ss << values[i] << separator;
         }
@@ -41,7 +41,7 @@ int Sum(int values[], int size)
     int finalSum = 0;
     for (int i = 0; i < size; i++) 
     {
-        finalSum += values[i];
+        finalSum += values[i];//Simply adds final sum to the array location and back again
     }
     return finalSum;
 }
@@ -52,7 +52,7 @@ bool HasValue(int values[], int size, int value)
     {
         if (values[i] == value)
         {
-            isPresent = true;
+            isPresent = true;//will return this if it's true
             return isPresent;
         }
         else
@@ -66,13 +66,13 @@ bool HasValue(int values[], int size, int value)
 
 int ValueAt(int values[], int size, int index, bool &error)
 {
-    if (index <= size && index >= 0)
+    if (index <= size && index >= 0)//Checks for a valid index choice
     {
         error = false;
     }
     else
     {
-        error = true;
+        error = true;//Will not execute next code if error is true
         return error;
     }
     if (error == false)
@@ -86,7 +86,7 @@ bool SwapValues(int values[], int size, int index1, int index2)
     bool canSwap = true;
     if (index1 <= size && index1 >= 0)
     {
-        canSwap = true;
+        canSwap = true;//I realize that I could've simply ended the function here, but I also proved that they could swap by swapping them later
     }
     else
     {
@@ -120,7 +120,7 @@ int main () {
     bool error;
     cout << "Please input the size of the array" << endl;
     cin >> size;
-    int values[size];
+    int values[size];//I had a mysterious glitch where if the size was above 6, it would never let it above 6. But it would operate under the assumption that it was the value you typed in the function themselves, this would only cause issue with the "check index value" function. It had something to do with where I declared the array
     cout << "Please input the separator character" << endl;
     cin >> separator;
     cout << PrepareForDisplay(values, size, separator) << endl;
@@ -128,7 +128,7 @@ int main () {
     cout << "Please enter the value you wish to search for" << endl;
     cin >> value;
     
-    if (HasValue(values, size, value) == 1)
+    if (HasValue(values, size, value) == 1)//1 is what true returns if given a numerical value
     {
         cout << "Your value was found" << endl;
     }
@@ -143,7 +143,7 @@ int main () {
 
     if (ValueAt(values, size, index, error) == 1)
     {
-        cout << "INVALID INDEX" << endl;
+        cout << "INVALID INDEX" << endl;//Knows which index is valid based on specified size of array
     }
     else
     {
