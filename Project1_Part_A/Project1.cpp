@@ -139,24 +139,7 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     int luhnNum_4[luhnStr_4.length()];
     int luhnDoubleNum_4[luhnStr_4.length()];
     
-    for (i = 0; i < luhnStr_1.length(); i++)
-    {
-        
-        luhnNum_1[i] = luhnStr_1[i];
-        fout << " ";
-        fout << char(luhnNum_1[i]);
-        fout << " ";
-        fin >> luhnNum_1[i];
-    }
-    for (i = 0; i < luhnStr_1.length(); i++)
-        {
-        int   digit = luhnStr_1[i] - '0';   // Char to number
-        if  (i & 1)  // Digit 1, 3, 5 not 0, 2, 4 - "even digits" starting at 1
-            if  ((digit <<= 1) >= 10) //  Double it, check >= 10
-                digit -= 9;           //  Same as summing the digits
-         sum += digit;
-        }
-    checksum = sum % 10;
+    
     
     
     
@@ -190,9 +173,10 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         luhnNum_1[i] = luhnStr_1[i];
         fout << " ";
         fout << char(luhnNum_1[i]);
-        fout << " ";
+        
         fin >> luhnNum_1[i];
     }
+    fout << endl;
     for (int i = 0; i < luhnStr_1.length(); i++)
         {
         int   digit = luhnStr_1[i] - '0';   
@@ -224,9 +208,10 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         luhnNum_2[i] = luhnStr_2[i];
         fout << " ";
         fout << char(luhnNum_2[i]);
-        fout << " ";
+        
         fin >> luhnNum_2[i];
     }
+    fout << endl;
     for (int i = 0; i < luhnStr_2.length(); i++)
         {
         int   digit = luhnStr_2[i] - '0';   
@@ -281,9 +266,10 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         luhnNum_3[i] = luhnStr_3[i];
         fout << " ";
         fout << char(luhnNum_3[i]);
-        fout << " ";
+        
         fin >> luhnNum_3[i];
     }
+    fout << endl;
     for (int i = 0; i < luhnStr_3.length(); i++)
         {
         int   digit = luhnStr_3[i] - '0';   
@@ -316,9 +302,10 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         luhnNum_4[i] = luhnStr_4[i];
         fout << " ";
         fout << char(luhnNum_4[i]);
-        fout << " ";
+        
         fin >> luhnNum_4[i];
     }
+    fout << endl;
     for (int i = 0; i < luhnStr_4.length(); i++)
         {
         int   digit = luhnStr_4[i] - '0';   
