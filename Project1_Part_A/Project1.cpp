@@ -106,7 +106,10 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     int asciiValue = 0;
     char luhnChar_ = 'i';
     long int creditCard[numCards];
-    int sum = 0;
+    int sum_1 = 0;
+    int sum_2 = 0;
+    int sum_3 = 0;
+    int sum_4 = 0;
     int checksum = 0;
     int a = 0;
     long int creditCardLuhn[numCards];
@@ -183,14 +186,15 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         if  (i & 1)  
             if  ((digit <<= 1) >= 10) 
                 digit -= 9;           
-         sum += digit;
+         sum_1 += digit;
         }
-    checksum = sum % 10;
+    checksum = sum_1 % 10;
     
     if (americanStr.length() == 13 && checksum == 0)
     {
         cout << " is an American Express Card" << endl;
         isCard = true;
+        cout << checksum;
     }
     else
     {
@@ -218,22 +222,22 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         if  (i & 1)  
             if  ((digit <<= 1) >= 10) 
                 digit -= 9;          
-         sum += digit;
+         sum_2 += digit;
         }
-    checksum = sum % 10;
+    checksum = sum_2 % 10;
     cout << "Checking Card " << a << " for Discover: " << creditCard[i] <<  endl;
     if (creditCard[i] >=601100000000000 && creditCard[i] <= 601199999999999&& checksum == 0)
     {
         cout << " is a Discover Card" << endl;  
                 isCard = true;
-
+cout << checksum;
     }
     else if (creditCard[i] >= 622126000000000 && creditCard[i] <= 622925999999999&& checksum == 0)
     {
         
         cout << " is a Discover Card" << endl;
                 isCard = true;
-
+cout << checksum;
     }
     
     else if (creditCard[i] >= 644000000000000 && creditCard[i] <= 649999999999999&& checksum == 0)
@@ -241,13 +245,13 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         cout << " is a Discover Card" << endl;
                 isCard = true;
 
-        
+        cout << checksum;
     }
     else if (creditCard[i] >= 650000000000000 && creditCard[i] <= 659999999999999&& checksum == 0)
     {
         cout << " is a Discover Card" << endl;
                 isCard = true;
-
+cout << checksum;
     }
     else
     {
@@ -272,19 +276,24 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
     fout << endl;
     for (int i = 0; i < luhnStr_3.length(); i++)
         {
+        
         int   digit = luhnStr_3[i] - '0';   
+        
         if  (i & 1)  
+            
             if  ((digit <<= 1) >= 10) 
+                
                 digit -= 9;          
-         sum += digit;
+         
+         sum_3 += digit;
         }
-    checksum = sum % 10;
+    checksum = sum_3 % 10;
     cout << "Checking Card " << a << " for Master Card: " << creditCard[i] <<  endl;
     if (creditCard[i] >=510000000000000 && creditCard[i] <= 559999999999999&& checksum == 0)
     {
         cout << " is a Master Card" << endl;
                 isCard = true;
-
+cout << checksum;
     }
     else
     {
@@ -312,15 +321,16 @@ int CheckBIN(long int american, long int master, long int discover, long int vis
         if  (i & 1)  
             if  ((digit <<= 1) >= 10) 
                 digit -= 9;           
-         sum += digit;
+         sum_4 += digit;
         }
-    checksum = sum % 10;
+    checksum = sum_4 % 10;
     cout << "Checking Card " << a <<" Visa: " << creditCard[i] <<  endl;
     visaSS >> visa;
     string visaStr = visaSS.str();
-    if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999 && visaStr.length() <= 16 && visaStr.length() >= 13 && checksum == 0)
+    if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 && checksum == 0 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 && checksum == 0 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999 && visaStr.length() <= 16 && visaStr.length() >= 13 && checksum == 0)
     {
         cout << " is a Visa Card" << endl;
+                cout << checksum;
                 isCard = true;
 
     }
