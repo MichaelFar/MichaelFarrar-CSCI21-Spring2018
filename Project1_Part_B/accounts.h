@@ -9,29 +9,33 @@
 #include <string.h>
 #include <stdio.h>
 #include <fstream>
+#include <cstdlib>
+#include <time.h>
 
-bool isCard = false;
+extern bool isCard;
+extern bool isAmerican;
+extern bool isDiscover;
+extern bool isMaster;
+extern bool isVisa;
+
 using namespace std;
-string setInput(int month, int day, int year, int numAccounts, long int creditCardNum[], double transactionAmount)
-{
-    stringstream creditCardss;
-    
-    creditCardss << creditCardNum[0] << ":" << month << "/" << day << "/" << year << ":" << transactionAmount << ":";
-    string creditCardAccounts = creditCardss.str();
-    
-    return creditCardAccounts;
-    
-}
 
-int CheckBIN(long int cardNum[])// Checks BIN of each card company and tells you if you have a valid card
+
+bool CheckBIN(long int cardNum[], int numAccounts, int currentCard)// Checks BIN of each card company and tells you if you have a valid card
 {
+     bool isValidAmerican;
+ bool isValidDiscover;
+ bool isValidMaster;
+bool isValidVisa;
+    
+    
     int superSum = 0;
     int evenSum = 0;
     int oddSum = 0;
     stringstream cardNumSS;
     int tempSum = 0;
     stringstream luhnSS_1;
-    int numCards = 1;
+    int numCards = numAccounts;
     ifstream fin;
     ofstream fout;
     fin.open("creditCards");
@@ -122,7 +126,8 @@ int CheckBIN(long int cardNum[])// Checks BIN of each card company and tells you
         
             
 }
-
+}
+    i = currentCard;
     sum_1 = oddSum + evenSum;
     
     superSum = sum_1 * 9;
@@ -136,7 +141,7 @@ int CheckBIN(long int cardNum[])// Checks BIN of each card company and tells you
         cout << "Holy cow" << endl;
     }
     */
-    cout << "Checking Card " << a <<" for American Express: " << creditCard[i] << endl;
+    
     long int visaDynamicLength = 0;
     if (creditCard[i] >=340000000000000 && creditCard[i] <= 349999999999999&& checksum == 0)// How I checked the BIN numbers
     {
@@ -150,104 +155,136 @@ int CheckBIN(long int cardNum[])// Checks BIN of each card company and tells you
     
     if (americanStr.length() == 13 && checksum == 0)
     {
-        cout << " is an American Express Card" << endl;
-        isCard = true;
-        cout << checksum;
+        
+        
+        return isAmerican = true;
+        
     }
     else
     {
-        if (isCard == false){//This bool is for stopping the loop in the main
-            cout << "Checking: is NOT American Express Card" << endl;
-        }
-        else
-        {
-        cout << " is NOT American Express Card" << endl;
-        }
+        
     }
     
-    cout << "Checking Card " << a << " for Discover: " << creditCard[i] <<  endl;
+    
     if (creditCard[i] >=601100000000000 && creditCard[i] <= 601199999999999&& checksum == 0)
     {
-        cout << " is a Discover Card" << endl;  
-                isCard = true;
-cout << checksum;
+          
+                
+                return isDiscover = true;
+
     }
     else if (creditCard[i] >= 622126000000000 && creditCard[i] <= 622925999999999&& checksum == 0)
     {
         
-        cout << " is a Discover Card" << endl;
-                isCard = true;
-cout << checksum;
+        
+                
+                return isDiscover = true;
+
     }
     
     else if (creditCard[i] >= 644000000000000 && creditCard[i] <= 649999999999999&& checksum == 0)
     {
-        cout << " is a Discover Card" << endl;
-                isCard = true;
+        
+                
+                return isDiscover = true;
 
-        cout << checksum;
+        
     }
     else if (creditCard[i] >= 650000000000000 && creditCard[i] <= 659999999999999&& checksum == 0)
     {
-        cout << " is a Discover Card" << endl;
-                isCard = true;
-cout << checksum;
+        
+                
+                return isDiscover = true;
+
     }
     else
     {
-        if (isCard == false){
-            cout << "Checking: is NOT Discover Card" << endl;
-        }
-        else
-        {
-        cout << " is NOT Discover Card" << endl;
-        }
+        
             
     }
     
-    cout << "Checking Card " << a << " for Master Card: " << creditCard[i] <<  endl;
     
     if (creditCard[i] >=5100000000000000 && creditCard[i] <= 5599999999999999 && checksum == 0)
     {                   
-        cout << " is a Master Card" << endl;
-            isCard = true;
+        
+            
+            return isMaster = true;
             
     }
     else
     {
-        if (isCard == false){
-            cout << "Checking: is NOT Master Card" << endl;
-        }
-        else
-        {
-        cout << " is NOT Master Card" << endl;
-        }
+        
     }
     
     
-    cout << "Checking Card " << a <<" Visa: " << creditCard[i] <<  endl;
+    
     stringstream visaSS;
     visaSS << creditCard[i];
     string visaStr = visaSS.str();
     if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 && checksum == 0 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 && checksum == 0 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999 && visaStr.length() <= 16 && visaStr.length() >= 13 && checksum == 0)
     {
-        cout << " is a Visa Card" << endl;
-                cout << checksum;
-                isCard = true;
+        
+                
+                return isVisa = true;
 
     }
     else
     {
-        if (isCard == false){
-            cout << "Checking: is NOT Visa Card" << endl;
-        }
-        else
-        {
-        cout << " is NOT Visa Card" << endl;
-        }
+        
     }
-    }
+    
+    
     fout.close();
     
+    if (isAmerican == false && isDiscover == false && isMaster == false && isVisa == false)
+    {
+        return isCard = false;
+        
+    }
+    else
+    {
+        return isCard = true;
+    }
+}
+
+
+string transactionInput(int month, int day, int year, int numAccounts, long int creditCardNum[], double transactionAmount, int currentCard, bool hello, string type[])
+{
+    srand(time(NULL));
+    string company = "INVALID";
+    
+    stringstream creditCardss;
+    
+if (isCard == true) {
+    if (isAmerican == true && isCard == true ) {
+        company = " American-Express";
+    }
+    else if (isDiscover == true  && isCard == true ) {
+        company = " Discover-Card";
+        isDiscover = false;
+        
+        
+    }
+    else if (isMaster == true && isCard == true ) {
+        company = " Master-Card";
+        isMaster = false;
+    }
+    else if (isVisa == true && isCard == true ) {
+        company = " Visa-Card";
+        isVisa = false;
+    }
+    else {
+        company == "INVALID";
+        
+    }
+}
+    
+    
+    int random = rand() % 99999 + 10000; 
+    creditCardss << creditCardNum[currentCard] << ":" << month << "/" << day << "/" << year << ":" << random << ":" << company <<":" << type[currentCard] << ":" << transactionAmount <<endl;
+    
+    string creditCardAccounts = creditCardss.str();
+    
+    return creditCardAccounts;
     
 }
