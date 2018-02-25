@@ -23,10 +23,10 @@ using namespace std;
 
 bool CheckBIN(long int cardNum[], int numAccounts, int currentCard)// Checks BIN of each card company and tells you if you have a valid card
 {
-     bool isValidAmerican;
- bool isValidDiscover;
- bool isValidMaster;
-bool isValidVisa;
+    bool isValidAmerican;
+    bool isValidDiscover;
+    bool isValidMaster;
+    bool isValidVisa;
     
     
     int superSum = 0;
@@ -155,15 +155,9 @@ bool isValidVisa;
     
     if (americanStr.length() == 13 && checksum == 0)
     {
-        
-        
         return isAmerican = true;
-        
     }
-    else
-    {
-        
-    }
+    
     
     
     if (creditCard[i] >=601100000000000 && creditCard[i] <= 601199999999999&& checksum == 0)
@@ -175,46 +169,25 @@ bool isValidVisa;
     }
     else if (creditCard[i] >= 622126000000000 && creditCard[i] <= 622925999999999&& checksum == 0)
     {
-        
-        
-                
-                return isDiscover = true;
-
+        return isDiscover = true;
     }
     
     else if (creditCard[i] >= 644000000000000 && creditCard[i] <= 649999999999999&& checksum == 0)
     {
-        
-                
-                return isDiscover = true;
-
-        
+            return isDiscover = true;
     }
     else if (creditCard[i] >= 650000000000000 && creditCard[i] <= 659999999999999&& checksum == 0)
     {
-        
-                
                 return isDiscover = true;
-
     }
-    else
-    {
-        
-            
-    }
+    
     
     
     if (creditCard[i] >=5100000000000000 && creditCard[i] <= 5599999999999999 && checksum == 0)
     {                   
-        
-            
             return isMaster = true;
-            
     }
-    else
-    {
-        
-    }
+    
     
     
     
@@ -223,14 +196,7 @@ bool isValidVisa;
     string visaStr = visaSS.str();
     if (creditCard[i] >= 4000000000000 && creditCard[i] <= 4999999999999 && checksum == 0 || creditCard[i] >= 40000000000000 && creditCard[i] <= 49999999999999 && checksum == 0 || creditCard[i] >= 400000000000000 && creditCard[i] <= 499999999999999 && visaStr.length() <= 16 && visaStr.length() >= 13 && checksum == 0)
     {
-        
-                
                 return isVisa = true;
-
-    }
-    else
-    {
-        
     }
     
     
@@ -239,7 +205,6 @@ bool isValidVisa;
     if (isAmerican == false && isDiscover == false && isMaster == false && isVisa == false)
     {
         return isCard = false;
-        
     }
     else
     {
@@ -262,8 +227,6 @@ if (isCard == true) {
     else if (isDiscover == true  && isCard == true ) {
         company = " Discover-Card";
         isDiscover = false;
-        
-        
     }
     else if (isMaster == true && isCard == true ) {
         company = " Master-Card";
@@ -275,7 +238,6 @@ if (isCard == true) {
     }
     else {
         company == "INVALID";
-        
     }
 }
     

@@ -47,6 +47,7 @@ int main() {
     string firstName[numAccounts];
     string lastName[numAccounts];
     double balance[numAccounts];
+    
     bool overCharge = false;//This is the flag that holds the result if a card is overcharged
     int numOfTransaction = 0;//Temporary variable that holds the total transaction in one month
     int i = 0;
@@ -87,8 +88,9 @@ for (int a = 0; a < numAccounts; a++)//This program loops as long as there are a
                         d = b + 1;
                     }
                     numOfTransaction = 0;
-        cout << "Month " << d << endl;
-        cout << "Account " << c << endl;
+                    
+                cout << "Month " << d << endl;
+                cout << "Account " << c << endl;
                
                 cout << "How many purchases did you make this month?" << endl;
                 cin >> transactions;//This is how many times the "transactions" loop runs. After it is done, a month has passed
@@ -103,7 +105,6 @@ for (int a = 0; a < numAccounts; a++)//This program loops as long as there are a
                     cout << type[c - 1] << endl;//The reason this array is indexed weird is due to which variable holds which account. C holds the account number, but c is displayed as 1 not 0. So In order to access index 0 I need to subtract one. This never attempts to find an element that doesn't exist
                     while (transactionAmount[c - 1] > balance[c - 1] && type[c - 1] == "Gold")//This checks if you're trying to overcharge a gold card. If you do, it does not let complete the purchase
                     {
-                        
                         cout << "That purchase attempt exceeds the balance of your account" << endl << "Please enter a valid charge or enter 0 for no charge" << endl;
                         cin >> transactionAmount[i];
                     }
@@ -122,7 +123,6 @@ for (int a = 0; a < numAccounts; a++)//This program loops as long as there are a
                         {
                             overCharge = false;
                         }
-                    
                     numOfTransaction += transactionAmount[i];// numOfTransaction is the total amount of money spent in one month
                     if (type[c - 1] == "Gold") {// These are the different rebate values
                         rebate = numOfTransaction * 0.01;
@@ -136,8 +136,6 @@ for (int a = 0; a < numAccounts; a++)//This program loops as long as there are a
                     
                     transactionVar = transactionAmount[i];
                     balance[c - 1] = balance[c - 1] - transactionVar;//This is the final balance calculator 
-                    
-                    
                 }
                 balance[i] += rebate;// This is balance plus rebate
                 difference = balance[i] - numOfTransaction;// Monthly expense
@@ -154,7 +152,6 @@ for (int a = 0; a < numAccounts; a++)//This program loops as long as there are a
                 }
                 balancesFout << balance[a] << endl;
         } 
-    
     }
 }
     
