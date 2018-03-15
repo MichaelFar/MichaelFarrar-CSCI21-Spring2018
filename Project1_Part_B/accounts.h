@@ -20,8 +20,15 @@ extern bool isVisa;
 
 using namespace std;
 
-
-bool CheckBIN(long int cardNum[], int numAccounts, int currentCard)// Checks BIN of each card company and tells you if you have a valid card
+class CreditCard {
+    private:
+    
+    long int cardNum[];
+    int numAccounts;
+    int currentCard;
+    
+    
+bool setCheckBIN(long int cardNum[], int numAccounts, int currentCard)// Checks BIN of each card company and tells you if you have a valid card
 {
     bool isValidAmerican;
     bool isValidDiscover;

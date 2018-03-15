@@ -1,5 +1,0 @@
-else if (humanGrid[i] == 'S' && humanGrid[i + 1] == 'S' && shipPlaced[3] == false|| humanGrid[i] == 'S' && humanGrid[i - 1] == 'S' && shipPlaced[3] == false|| humanGrid[i] == 'S' && humanGrid[i + 10] == 'S' && shipPlaced[3] == false || humanGrid[i] == 'S' && humanGrid[i - 10] == 'S' && shipPlaced[3] == false){
-            shipIndex[4] = i;
-            shipPlaced[4] = true;
-            
-            }
