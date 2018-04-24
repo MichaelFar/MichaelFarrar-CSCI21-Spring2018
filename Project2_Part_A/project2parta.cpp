@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
@@ -5,14 +6,13 @@
 #include <fstream>
 #include <cstdlib>
 #include <time.h>
-
+#include <queue>
 
 using namespace std;
 
 class player {
     
     protected:
-    
     
     
     public:
@@ -23,8 +23,6 @@ class player {
 };
 
 class human : player{//The class that handles how the index of the user is interpreted
-    
-    
     
     protected:
     
@@ -53,10 +51,10 @@ class human : player{//The class that handles how the index of the user is inter
         }
         else if (letterChoice == 'b' || letterChoice == 'B') {
             coordinateIndex = 10;
-        }
+        } 
         else if (letterChoice == 'c' || letterChoice == 'C') {
             coordinateIndex = 20;
-        }
+        } 
         else if (letterChoice == 'd' || letterChoice == 'D') {
             coordinateIndex = 30;
         }
@@ -79,6 +77,7 @@ class human : player{//The class that handles how the index of the user is inter
             coordinateIndex = 90;
         }
         else {
+            
             invalidIndex = true;
             
         }
@@ -114,55 +113,152 @@ class human : player{//The class that handles how the index of the user is inter
 class computer : human {//The class that handles computer decision
     protected:
     
+    bool emptyQueue;
     int letterChoice_;
     int numberChoice_;
     int choice;
     int trueChoice;
     char computerLetterCoordinate;
+    queue<int> nextCoordinates;
     public:
     
     computer() {
+        emptyQueue = true;
         choice = 0;
     }
-    void setCoordinate_play() {// The computer bases it's decisions on a random number. This will obviously be replaced in part b
-    srand(time(NULL));
-    choice = rand() % 90;
-    choice += rand() % 10;
-    srand(choice);
-    trueChoice = choice;
-    if (choice >= 0 && choice < 10) {//The code below does the reverse of the similar code in the player setCoordinatePlay. It translates a number into a letter so that the user may understand it' decision. Otherwise the user would see something like '82'
+    void setCoordinate_play(queue<int> nextCoordinates, const vector<char>& computerBlank) {// The computer bases it's decisions on a random number. This will obviously be replaced in part b
+    bool queueIsEmpty = true;
+    int i = 0;
+    if (nextCoordinates.size() > 0) {
+    queueIsEmpty = false;
+    emptyQueue = queueIsEmpty;
+    }
+    else {
+        //cout << "Queue is empty" << endl;
+        queueIsEmpty = true;
+    }
+    
+    
+    if (queueIsEmpty == true) {
+                
+                srand(time(NULL));
+                choice = rand() % 90;
+                choice += rand() % 10;
+                srand(choice);
+                srand(choice * rand() % 100000);
+                trueChoice = choice;
+                while (computerBlank.at(choice) == 'H' || computerBlank.at(choice) == 'M' && computerBlank.at(i) == 'H' || computerBlank.at(i) == 'M'){
+
+                i++;
+                
+                
+                choice = i;
+                trueChoice = choice;
+                
+            }
+        
+    }
+    else {
+        
+        
+        trueChoice = nextCoordinates.front();
+        
+        while (computerBlank.at(trueChoice) == 'H' && queueIsEmpty == false || computerBlank.at(trueChoice) == 'M' && queueIsEmpty == false) {
+            //cout << "Queue size: " << nextCoordinates.size() << endl;
+            if (nextCoordinates.size() > 0) {
+            
+            queueIsEmpty = false;
+            emptyQueue = queueIsEmpty;
+            }
+            else {
+                queueIsEmpty = true;
+            }
+            
+            //cout << "I didn't hit an illogical space" << endl;
+            if (nextCoordinates.size() > 0){
+            nextCoordinates.pop();
+            }
+            if (nextCoordinates.size() > 0) {
+                
+                if (computerBlank.at(nextCoordinates.front() != 'M')) {
+                //cout << "I will hit " << computerBlank.at(nextCoordinates.front()) << endl;
+                trueChoice = nextCoordinates.front();
+                // if (computerBlank.at(trueChoice) == 'M'){
+                // while (computerBlank.at(trueChoice) == 'H' || computerBlank.at(trueChoice) == 'M' && computerBlank.at(i) == 'H' || computerBlank.at(i) == 'M'){
+                
+                // i++;
+                
+                
+                // choice = i;
+                // trueChoice = choice;
+                
+                //     }
+                // }
+                }
+                else
+                {
+                    nextCoordinates.pop();
+                // while (computerBlank.at(trueChoice) == 'H' || computerBlank.at(trueChoice) == 'M' && computerBlank.at(i) == 'H' || computerBlank.at(i) == 'M'){
+                
+                // i++;
+                
+                
+                // choice = i;
+                // trueChoice = choice;
+                
+            //}
+                    
+                }
+                
+                    
+            }
+            
+                
+        }
+        if (computerBlank.at(trueChoice) == 'M') {
+            setCoordinate_play(nextCoordinates, computerBlank);
+        } 
+        if (queueIsEmpty == false) {
+            cout << "Decision popped" << endl;
+        nextCoordinates.pop();
+        }
+    }
+    
+    if (trueChoice >= 0 && trueChoice < 10) {//The code below does the reverse of the similar code in the player setCoordinatePlay. It translates a number into a letter so that the user may understand it's decision. Otherwise the user would see something like '82'
             computerLetterCoordinate = 'A';
         }
-        else if (choice >= 10 && choice < 20) {
+        else if (trueChoice >= 10 && trueChoice < 20) {
             computerLetterCoordinate = 'B';
         }
-        else if (choice >= 20 && choice < 30) {
+        else if (trueChoice >= 20 && trueChoice < 30) {
             computerLetterCoordinate = 'C';
         }
-        else if (choice >= 30 && choice < 40) {
+        else if (trueChoice >= 30 && trueChoice < 40) {
             computerLetterCoordinate = 'D';
         }
-        else if (choice >= 40 && choice < 50) {
+        else if (trueChoice >= 40 && trueChoice < 50) {
             computerLetterCoordinate = 'E';
         }
-        else if (choice >= 50 && choice < 60) {
+        else if (trueChoice >= 50 && trueChoice < 60) {
             computerLetterCoordinate = 'F';
         }
-        else if (choice >= 60 && choice < 70) {
+        else if (trueChoice >= 60 && trueChoice < 70) {
             computerLetterCoordinate = 'G';
         }
-        else if (choice >= 70 && choice < 80) {
+        else if (trueChoice >= 70 && trueChoice < 80) {
             computerLetterCoordinate = 'H';
         }
-        else if (choice >= 80 && choice < 90) {
+        else if (trueChoice >= 80 && trueChoice < 90) {
             computerLetterCoordinate = 'I';
         }
-        else if (choice >= 90 && choice < 100) {
+        else if (trueChoice >= 90 && trueChoice < 100) {
             computerLetterCoordinate = 'J';
         }
     
     
     }
+    
+    
     int getCoordinate_play() {
         return trueChoice;
         
@@ -172,6 +268,9 @@ class computer : human {//The class that handles computer decision
         ss << computerLetterCoordinate << " " << trueChoice % 10 + 1<< endl;
         string friendlyCoordinate = ss.str();
         return friendlyCoordinate;
+    }
+    queue<int> getInternalQueue(){
+        return nextCoordinates;
     }
 };
 
@@ -246,8 +345,7 @@ class grid {//This class is all about applying the chosen indexes to the grid
                 cout << "There are not enough ship units, please edit your file " << endl;
                 return 0;
             }
-            
-            
+            /*merge sort*/
             
             
             
@@ -301,7 +399,7 @@ class grid {//This class is all about applying the chosen indexes to the grid
 int main() {
     ifstream fin;
     ofstream fout;
-    
+    int computerTurns = 0;
     bool humanInvalid;
     bool computerInvalid;
     // I apologize for the sheer number of objects. At the time I did not really understand how they worked
@@ -311,15 +409,19 @@ int main() {
     grid fleshbag;
     grid synth;
     
+    deque<int> computerCopy;
+    queue<int> computerTasks;
     int setting = 0;//This is for if you want to see the computers blank information grid
     fleshbag.generateBlankGrid();//Blank grid is generated for the human
     cout << endl;
     synth.generateBlankGrid();// Blank grid is generated for the computer
     
-   vector<char> humanBlank = fleshbag.getBlankGrid();// These vectors are assigned the returned vector in the grid class
+    vector<char> humanBlank = fleshbag.getBlankGrid();// These vectors are assigned the returned vector in the grid class
     vector<char> computerBlank = synth.getBlankGrid();
     vector<char>TheLetters(10);//Letters are how the grids are displayed properly  
+    
     TheLetters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+    
     int countLetter = 0;
     int confirmation;//Confirmation is an unused variable
     bool hasHit = false;//Has hit determines if you are allowed to hit again or not
@@ -332,11 +434,17 @@ int main() {
     vector<char>computerGrid(100);
     int computerShipUnits = 0;//Variables that holds ship units of their respective players
     int playerShipUnits = 0;
+    
     cout << "Specify the file that holds your grid and coordinates" << endl;
+    
     cin >> fileName;
+    
     fin.open(fileName);//Filename may be invalid, but this is checked later
+    
     cout << "Do you want the computer to show it's information grid? 1 for yes (not the grid with ships)" << endl;
+    
     cin >> setting;
+    
     for (int i = 0; i < 100; i++) {
         
         fin >> humanGrid[i];
@@ -377,241 +485,340 @@ int main() {
     cout << "^^ Your grid  flesh bag^^ "<< endl;
     cout << "Ready to play? OK flesh bag goes first" << endl;
     
-while (playerShips != 0 && computerShips != 0) {//When one of the two players ships becomes zero, the game ends and the player who won is declared
-    
-    cout << computerShips << endl;
-    cout << playerShips << endl;
-    cout << endl;
-    cout << "Please enter the coordinates of where you wish to hit separated by a space. EX: A 1" << endl;
-    
-    cin >> charChoice;
-    
-    cin >> numberChoice;
-    
-    
-    
-    
-    //The user is prompted again to attack if they hit
-    player.setCoordinate_play(charChoice, numberChoice);
-    humanInvalid = player.getInvalidIndex();
-    computerInvalid = beepboop.getInvalidIndex();
-    playerShot = player.getCoordinate_play();
-    
-    while (humanInvalid == true || computerInvalid == true) {
+    while (playerShips != 0 && computerShips != 0) {//When one of the two players ships becomes zero, the game ends and the player who won is declared
         
-        cout << "That coordinate was invalid, please input another" << endl;
+        cout << computerShips << endl;
+        cout << playerShips << endl;
+        cout << endl;
+        cout << "Please enter the coordinates of where you wish to hit separated by a space. EX: A 1" << endl;
         
         cin >> charChoice;
-    
+        
         cin >> numberChoice;
         
         
+        
+        
+        //The user is prompted again to attack if they hit
         player.setCoordinate_play(charChoice, numberChoice);
         humanInvalid = player.getInvalidIndex();
-        humanInvalid = player.getInvalidNumberIndex();
+        computerInvalid = beepboop.getInvalidIndex();
+        playerShot = player.getCoordinate_play();
         
-    }
-    
-    if (computerGrid[playerShot] == 'S' && humanBlank[playerShot] != 'H' && humanBlank[playerShot] != 'M')
-    {
-        
-        //This if statement checks if you've already hit the same spot twice
-        humanBlank[playerShot] = 'H';
-        cout << "HIT!" << endl;
-        
-        hasHit = true;
-        computerShips -= 1;
-        
-        
-        for (int a = 0; a < 10; a++) {
-                    countLetter = a + 1;//Countletter was important for printing the letters out properly on the grid
-                    if (countLetter == 1) {
-                        cout << "  " << countLetter << " ";
-                    }
-                    else
-                    {
-                    cout << countLetter << " ";
-                    }
-                        
-                }
-                cout << endl;
-        for (int i = 0; i < 100; i++) {
-                int countVar = i + 1;
-                
-            if (countVar % 10 != 0) {
-                if (i == 0) {
-                    cout << TheLetters[i] << " ";
-                }
-                cout << humanBlank[i] << " ";
-                }
-                else {
-                    
-                    cout << humanBlank[i] <<" " <<endl;
-                    cout << TheLetters[countVar / 10] << " ";
-                }
-                
-                
-            }
+        while (humanInvalid == true || computerInvalid == true) {//The computer will never enter an invalid coordinate, but better safe than sorry
             
-    }
-    else
-    {
+            cout << "That coordinate was invalid, please input another" << endl;
+            
+            cin >> charChoice;
         
-        hasHit = false;//When hasHit = false the player's turn ends
+            cin >> numberChoice;
+            
+            
+            player.setCoordinate_play(charChoice, numberChoice);
+            humanInvalid = player.getInvalidIndex();
+            humanInvalid = player.getInvalidNumberIndex();
+            
+        }
         
-        if (humanBlank[playerShot] != 'H') {
-            humanBlank[playerShot] = 'M';
-            }
-            else
-            {
-                cout << "Why did you hit the same spot twice? Stupid flesh bag" << endl;//Insults you for hitting the same spot twice. Thought it was funny
-            }
-            int countLetter = 0;
-        for (int a = 0; a < 10; a++) {
-                    countLetter = a + 1;
-                    if (countLetter == 1) {
-                        cout << "  " << countLetter << " ";
-                    }
-                    else
-                    {
-                    cout << countLetter << " ";
-                    }
-                        
-                }
-                cout << endl;
-        for (int i = 0; i < 100; i++) {
-                int countVar = i + 1;
-                
-            if (countVar % 10 != 0) {
-                if (i == 0) {
-                    cout << TheLetters[i] << " ";
-                }
-                cout << humanBlank[i] << " ";
-                }
-                else {
-                    
-                    cout << humanBlank[i] <<" " <<endl;
-                    cout << TheLetters[countVar / 10] << " ";
-                }
-                
-                
-            }
-            cout << "^^ Your info ^^" << endl;
-        cout << endl;
-        cout << "You missed" << endl;
-        
-    }
-    
-    while (hasHit == false) {//The computer will use hasHit to determine if it's his turn
-        
-        cout << "Computer's turn " << endl;
-        one.setCoordinate_play();
-        srand(one.getCoordinate_play());//The seed is reset so it doesn't keep hittin the same spot
-        computerShot = one.getCoordinate_play();
-        string friendlyCoordinate = one.getFriendlyCoordinate();
-        cout << friendlyCoordinate << endl;
-        if (humanGrid[computerShot] == 'S'&& computerBlank[computerShot] != 'H' && computerBlank[computerShot] != 'M') {//This if statement handles the hitting of the player. If you hit the s unit, you subtract one s unit
-            computerBlank[computerShot] = 'H';
-            hasHit = false;
-            playerShips -= 1;
-            countLetter = 0;
-            int countVar = 0;
+        if (computerGrid[playerShot] == 'S' && humanBlank[playerShot] != 'H' && humanBlank[playerShot] != 'M')
+        {
+            
+            //This if statement checks if you've already hit the same spot twice
+            humanBlank[playerShot] = 'H';
+            cout << "HIT!" << endl;
+            
+            hasHit = true;
+            computerShips -= 1;
+            
+            
             for (int a = 0; a < 10; a++) {
-                    countLetter = a + 1;
-                    if (countLetter == 1) {
-                        cout << "  " << countLetter << " ";
+                        countLetter = a + 1;//Countletter was important for printing the letters out properly on the grid
+                        if (countLetter == 1) {
+                            cout << "  " << countLetter << " ";
+                        }
+                        else
+                        {
+                        cout << countLetter << " ";
+                        }
+                            
                     }
-                    else
-                    {
-                    cout << countLetter << " ";
-                    }
-                        
-                }
-                cout << endl;
-        for (int i = 0; i < 100; i++) {
-                int countVar = i + 1;
-                
-            if (countVar % 10 != 0) {
-                if (i == 0) {
-                    cout << TheLetters[i] << " ";
-                }
-                cout << computerBlank[i] << " ";
-                }
-                else {
+                    cout << endl;
+            for (int i = 0; i < 100; i++) {
+                    int countVar = i + 1;
                     
-                    cout << computerBlank[i] <<" " <<endl;
-                    cout << TheLetters[countVar / 10] << " ";
+                if (countVar % 10 != 0) {
+                    if (i == 0) {
+                        cout << TheLetters[i] << " ";
+                    }
+                    cout << humanBlank[i] << " ";
+                    }
+                    else 
+                    {
+                        cout << humanBlank[i] <<" " <<endl;
+                        cout << TheLetters[countVar / 10] << " ";
+                    }
                 }
-                
-                
-            }
-            if (setting != 0) {
-                cout << "^^ Computer's info ^^ " << endl;
-            }
-            else
-            {
-                cout << endl;
-            }
-            
-        cout << endl;
         }
         else
         {
-            if (humanGrid[computerShot] != 'H') {
-            computerBlank[computerShot] = 'M';
-            }
-            else
-            {
-                cout << "Computer hit the same spot" << endl;//Incase the computer somehow still hits the same spot
-            }
             
-            hasHit = true;
-            int countVar = 0;
+            hasHit = false;//When hasHit = false the player's turn ends
+            
+            if (humanBlank[playerShot] != 'H') {
+                humanBlank[playerShot] = 'M';
+                }
+                else
+                {
+                    cout << "Why did you hit the same spot twice? Stupid flesh bag" << endl;//Insults you for hitting the same spot twice. Thought it was funny
+                }
+                int countLetter = 0;
             for (int a = 0; a < 10; a++) {
-                    countLetter = a + 1;
-                    if (countLetter == 1) {
-                        cout << "  " << countLetter << " ";
-                    }
-                    else
-                    {
-                    cout << countLetter << " ";
-                    }
+                        countLetter = a + 1;
+                        if (countLetter == 1) {
+                            cout << "  " << countLetter << " ";
+                        }
+                        else
+                        {
+                            
+                        cout << countLetter << " ";
                         
-                }
-                cout << endl;
-        for (int i = 0; i < 100; i++) {
-                int countVar = i + 1;
-                
-            if (countVar % 10 != 0) {
-                if (i == 0) {
-                    cout << TheLetters[i] << " ";
-                }
-                cout << computerBlank[i] << " ";
-                }
-                else {
+                            
+                        }
+                            
+                    }
+                    cout << endl;
+            for (int i = 0; i < 100; i++) {
+                    int countVar = i + 1;
                     
-                    cout << computerBlank[i] <<" " <<endl;
-                    cout << TheLetters[countVar / 10] << " ";//By dividing by ten the proper letter is printed at the right times
+                if (countVar % 10 != 0) {
+                    if (i == 0) {
+                        cout << TheLetters[i] << " ";
+                    }
+                    cout << humanBlank[i] << " ";
+                    }
+                    else {
+                        
+                        cout << humanBlank[i] <<" " <<endl;
+                        cout << TheLetters[countVar / 10] << " ";
+                    }
+                    
+                    
+                }
+                cout << "^^ Your info ^^" << endl;
+            cout << endl;
+            cout << "You missed" << endl;
+            
+        }
+        
+        while (hasHit == false) {//The computer will use hasHit to determine if it's its turn
+            computerTurns += 1;
+            // cout << "Computer's turn " << endl;
+            // cout << "Number of turns taken " << computerTurns << endl;
+            
+            srand(one.getCoordinate_play());//The seed is reset so it doesn't keep hitting the same spot
+            
+            one.setCoordinate_play(computerTasks, computerBlank);
+            
+            computerShot = one.getCoordinate_play();
+            
+            
+            string friendlyCoordinate = one.getFriendlyCoordinate();
+            
+            cout << friendlyCoordinate << endl;
+            if (humanGrid[computerShot] == 'S' && computerBlank[computerShot] != 'H' && computerBlank[computerShot] != 'M') {//This if statement handles the hitting of the player. If you hit the s unit, you subtract one s unit
+                computerBlank[computerShot] = 'H';
+                if (computerShot >= 10 && computerBlank[computerShot] != 'M' || computerBlank[computerShot] != 'H') {
+                    
+                    if (computerBlank[computerShot - 10] != 'M' || computerBlank[computerShot - 10] != 'H')
+                    {
+                    // cout << "THE COMPUTER JUST TRIED TO HIT " << computerBlank[computerShot - 10] << endl;
+                    computerTasks.push(computerShot - 10);
+                    }
+                    // else {
+                    //     cout << "- 10 did not push" << endl;
+                    // }
+                    
+                }
+                if (computerShot < 100 && computerBlank[computerShot] != 'M' || computerBlank[computerShot] != 'H') {
+                    
+                    if (computerBlank[computerShot + 1] != 'M' || computerBlank[computerShot + 1] != 'H')
+                    {
+                        // cout << "THE COMPUTER JUST TRIED TO HIT " << computerBlank[computerShot + 1] << endl;
+                    computerTasks.push(computerShot + 1);
+                    }
+                    // else {
+                    //     cout << "+ 1 did not push" << endl;
+                    // }
+                    
+                //cout << "+ 1 pushed" << endl;
+                }
+                if (computerShot <= 90 && computerBlank[computerShot] != 'M' || computerBlank[computerShot] != 'H') {
+                    
+                    if (computerBlank[computerShot + 10] != 'M' || computerBlank[computerShot + 10] != 'H')
+                    {
+                        // cout << "THE COMPUTER JUST TRIED TO HIT " << computerBlank[computerShot + 10] << endl;
+                    computerTasks.push(computerShot + 10);
+                    }
+                    // else {
+                    //     cout << "+ 10 did not push" << endl;
+                    // }
+                    
+                    
+                }
+                if (computerShot >= 1 && computerBlank[computerShot] != 'M' || computerBlank[computerShot] != 'H') {
+                    
+                    if (computerBlank[computerShot - 1] != 'M' || computerBlank[computerShot - 1] != 'H')
+                    {
+                        // cout << "THE COMPUTER JUST TRIED TO HIT " << computerBlank[computerShot - 1] << endl;
+                    computerTasks.push(computerShot - 1);
+                    }
+                    // else {
+                    //     cout << "- 1 did not push" << endl;
+                    // }
+                    
+                
+                    
                 }
                 
+                hasHit = false;
+                playerShips -= 1;
+                countLetter = 0;
+                int countVar = 0;
                 
-            }
-            if (setting != 0) {
-            cout << "^^ Computer's info ^^" << endl;
+                for (int a = 0; a < 10; a++) {
+                        countLetter = a + 1;
+                        if (countLetter == 1) {
+                            cout << "  " << countLetter << " ";
+                        }
+                        else
+                        {
+                        cout << countLetter << " ";
+                        }
+                            
+                    }
+                
+                    cout << endl;
+            for (int i = 0; i < 100; i++) {
+                    int countVar = i + 1;
+                    
+                if (countVar % 10 != 0) {
+                    
+                    if (i == 0) 
+                    {
+                        cout << TheLetters[i] << " ";
+                    }
+                    cout << computerBlank[i] << " ";
+                    }
+                    else {
+                        
+                        cout << computerBlank[i] <<" " <<endl;
+                        cout << TheLetters[countVar / 10] << " ";
+                    }
+                    
+                    
+                }
+                
+                if (setting != 0) 
+                {
+                    cout << "Computer's turns " << computerTurns << endl;
+                    cout << "^^ Computer's info ^^ " << endl;
+                }
+                else
+                {
+                    cout << endl;
+                }
+                
+            
+            cout << endl;
             }
             else
             {
-                cout << endl;
+                
+                 //computerTasks = one.getInternalQueue();
+                //  cout << one.getInternalQueue().size() << endl;
+                //  cout << "Main queue " << computerTasks.size() << endl;
+                 if (computerTasks.size() != one.getInternalQueue().size() && one.getInternalQueue().size() == 0){ 
+                     
+                //  cout <<"Will now attempt to pop in main with " << computerTasks.size()<<" in queue" << endl;
+                 //for (int i = 0; i < computerTasks.size() - one.getInternalQueue().size(); i++) 
+                // while (computerTasks.size() != one.getInternalQueue().size())
+                //  {
+                computerTasks.pop();    
+                //  cout << "I popped in main" << endl;
+                    
+                }
+                while (computerBlank[computerShot] == 'H' || computerBlank[computerShot] == 'M'){
+                
+                if (computerTasks.size() != 0) {
+                computerTasks.pop();    
+                }
+                else
+                {
+                    break;
+                }
+                    
+                }
+                 
+                
+                if (humanGrid[computerShot] != 'S' && computerBlank[computerShot] != 'M') {
+                computerBlank[computerShot] = 'M';
+                }
+                // else
+                // {
+                //     cout << "THE COMPUTER JUST TRIED TO HIT " << computerBlank[computerShot] << endl;
+                //     cout << "Computer hit the same spot" << endl;//Incase the computer somehow still hits the same spot
+                // }
+                
+                hasHit = true;
+                int countVar = 0;
+                for (int a = 0; a < 10; a++) {
+                    
+                        countLetter = a + 1;
+                        
+                        if (countLetter == 1) {
+                            cout << "  " << countLetter << " ";
+                        }
+                        else
+                        {
+                        cout << countLetter << " ";
+                        }
+                            
+                    }
+                    cout << endl;
+            for (int i = 0; i < 100; i++) {
+                    int countVar = i + 1;
+                    
+                if (countVar % 10 != 0) {
+                    
+                    if (i == 0) {
+                        cout << TheLetters[i] << " ";
+                    }
+                    cout << computerBlank[i] << " ";
+                    }
+                    else {
+                        
+                        cout << computerBlank[i] <<" " <<endl;
+                        cout << TheLetters[countVar / 10] << " ";//By dividing by ten the proper letter is printed at the right times
+                    }
+                    
+                    
+                }
+                if (setting != 0) {
+                cout << "^^ Computer's info ^^" << endl;
+                }
+                else
+                {
+                    cout << endl;
+                }
             }
         }
+    
+    if (computerShips == 0) {
+        cout << "Flesh bag wins!" << endl;
+    }
+    else if (playerShips == 0)
+    {
+        cout << "The superior circuitry of a synthetic being has won. Stupid fleshbag" << endl;
     }
 }
-if (computerShips == 0) {
-    cout << "Flesh bag wins!" << endl;
-}
-else
-{
-    cout << "The superior circuitry of a synthetic being has won. Stupid fleshbag" << endl;
-}
-    
 }

@@ -13,6 +13,7 @@ bool isMaster = false;
 bool isVisa = false;
 
 int main() {
+    
     ofstream fout;
     ifstream fin;
     
@@ -62,7 +63,6 @@ int main() {
         cout << userCreditCard[i] << endl;
         
     }
-    
     
     fout.open("transactions");
     
@@ -154,8 +154,3 @@ for (int a = 0; a < numAccounts; a++)//This program loops as long as there are a
         } 
     }
 }
-    
-    
-
-    
-
